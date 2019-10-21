@@ -1,0 +1,59 @@
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  {% bootstrap_css %}
+  <style>
+      @font-face { font-family: 'Arita-dotum-Medium'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-dotum-Medium.woff') format('woff'); font-weight: normal; font-style: normal; }
+      @font-face { font-family: 'TmonMonsori'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/TmonMonsori.woff') format('woff'); font-weight: normal; font-style: normal; }
+      .nav {
+        font-family: 'Arita-dotum-Medium';
+        font-size: 1.5rem;
+      }
+
+      .ccontent {
+        font-family: 'Arita-dotum-Medium';
+
+      }
+
+      .ctitle {
+        font-family: 'TmonMonsori';
+      }
+  </style>
+</head>
+<body>
+  <ul class="nav nav-pills justify-content-center">
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'dcinside:index' %}">HOME</a>
+    </li>
+    {% if user.is_authenticated %}
+    <li class="nav-item">
+      <a class="nav-link disabled" tabindex="-1" aria-disabled="true">{{user.username}}님 안녕하세요!</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'dcinside:create' %}">글쓰기</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'accounts:logout' %}">LOGOUT</a>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'accounts:signup' %}">SIGNUP</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'accounts:login' %}">LOGIN</a>
+    </li>
+    {% endif %}
+  </ul>
+  <div class="container">
+    {% block body %}
+    {% endblock %}
+  </div>
+
+  {% bootstrap_javascript jquery='full' %}
+</body>
+</html>

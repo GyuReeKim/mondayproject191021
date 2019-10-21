@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block body %}
+
+  <div class="jumbotron">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col" colspan="2" class="text-center ctitle" style="font-size: 25px">제목 : {{dcinside.title}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-left ccontent">작성자 : {{dcinside.user}}</td>
+
+          <td class="text-right ccontent">작성일 : {{dcinside.created_at}}</td>
+        </tr>
+        <tr>
+          <td class="ccontent" scope="col" colspan="2">{{dcinside.content}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    {% if user == dcinside.user %}
+    <div class="row d-Flex justify-content-end mx-2">
+      <a href="{% url 'dcinside:update' dcinside.id %}" class="btn btn-warning btn-sm mx-1">수정</a>
+      <form action="{% url 'dcinside:delete' dcinside.id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="삭제" class="btn btn-danger btn-sm mx-1">
+      </form>
+    </div>
+    {% endif %}
+
+    <hr class="my-4">
+
+    <div class="container">
+      {% if user.is_authenticated %}
+        <form action="{% url 'dcinside:comment_create' dcinside.id %}" method="post">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          <div class="d-flex justify-content-end">
+            <input type="submit" class="btn btn-primary btn-sm" value="제출">
+          </div>
+        </form>
+      {% else %}
+        <h3 class="ccontent">로그인하세요</h3>
+      {% endif %}
+    
+      <table class="table my-3 ccontent">
+        <tbody>
+          {% for comment in dcinside.comment_set.all %}
+            <tr>
+              <td>{{comment.c_user}}</td>
+              <td>{{comment.reply}}</td>
+              <td>
+                <div class="d-flex justify-content-end">
+                  {{comment.c_created_at}}
+                </div>
+              </td>
+              {% if user == comment.c_user %}
+                <td>
+                  <form action="{% url 'dcinside:comment_delete' dcinside.id comment.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-end">
+                      <input type="submit" value="삭제" class="btn btn-danger btn-sm">
+                    </div>
+                  </form>
+                </td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+    
+{% endblock %}

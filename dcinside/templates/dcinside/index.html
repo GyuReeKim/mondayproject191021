@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <div class="card mt-5 ctitle">
+    <div class="card-body d-flex justify-content-between">
+      <span>제목</span> <span>작성자</span>
+      <!-- {{dcinside.title}}, {{dcinside.user}}, <input type="submit" class="btn btn-danger"> -->
+    </div>
+  </div>
+  {% for dcinside in dcinsides %}
+    <div class="card ccontent">
+      <div class="card-body d-flex justify-content-between py-1">
+        <span><a href="{% url 'dcinside:detail' dcinside.id %}">{{dcinside.title}}</a></span> <span>{{dcinside.user}}</span>
+        <!-- {{dcinside.title}}, {{dcinside.user}}, <input type="submit" class="btn btn-danger"> -->
+      </div>
+      
+    </div>
+  {% empty %}
+    <div class="card ccontent">
+      <div class="card-body d-flex justify-content-between py-1">
+        <span>게시물을 작성하세요</span>
+        <!-- {{dcinside.title}}, {{dcinside.user}}, <input type="submit" class="btn btn-danger"> -->
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}
