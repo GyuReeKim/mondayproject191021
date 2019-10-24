@@ -19,6 +19,20 @@
         <tr>
           <td class="ccontent" scope="col" colspan="2">{{dcinside.content}}</td>
         </tr>
+        <tr>
+          <td>
+            {{dcinside.like_users.all.count}}
+            {% if user == dcinside.user %}
+              <a class="btn">좋아요</a>
+            {% else %}
+              {% if user in  dcinside.like_users.all %}
+                <a href="{% url 'dcinside:like' dcinside.id %}" class="btn">좋아요취소</a>
+              {% else %}
+                <a href="{% url 'dcinside:like' dcinside.id %}" class="btn">좋아요</a>
+              {% endif %}
+            {% endif %}
+          </td>
+        </tr>
       </tbody>
     </table>
 
@@ -56,6 +70,19 @@
               <td>
                 <div class="d-flex justify-content-end">
                   {{comment.c_created_at}}
+                </div>
+              </td>
+              <td>
+                <div class="d-flex justify-content-end">
+                  {% if user == comment.c_user %}
+                    <a class="btn">{{comment.like_users.all.count}} 좋아요</a>
+                  {% else %}
+                    {% if user in comment.like_users.all %}
+                      <a href="{% url 'dcinside:comment_like' dcinside.id comment.id %}" class="btn">{{comment.like_users.all.count}} 좋아요취소</a>
+                    {% else %}
+                      <a href="{% url 'dcinside:comment_like' dcinside.id comment.id %}" class="btn">{{comment.like_users.all.count}} 좋아요</a>
+                    {% endif %}
+                  {% endif %}
                 </div>
               </td>
               {% if user == comment.c_user %}

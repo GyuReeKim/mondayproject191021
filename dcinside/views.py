@@ -86,3 +86,25 @@ def comment_delete(request, id, c_id):
         comment = get_object_or_404(Comment, id=c_id)
         comment.delete()
         return redirect('dcinside:detail', id)
+
+@login_required
+def like(request, id):
+    dcinside = get_object_or_404(Dcinside, id=id)
+    user = request.user
+
+    # if user in dcinside.like_users.all():
+    if dcinside.like_users.filter(id=user.id):
+        dcinside.like_users.remove(user)
+    else:
+        dcinside.like_users.add(user)
+    return redirect('dcinside:detail', id)
+
+def comment_like(request, id, c_id):
+    dcinside = get_object_or_404(Dcinside, id=id)
+    comment = get_object_or_404(Comment, id=c_id)
+    user = request.user
+    if user in comment.like_users.all():
+        comment.like_users.remove(user)
+    else:
+        comment.like_users.add(user)
+    return redirect('dcinside:detail', id)
